@@ -5,10 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PeopleApplication.Middleware;
 using PeopleApplication.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PeopleApplication
 {
@@ -34,7 +30,6 @@ namespace PeopleApplication
             app.UseRouting();
 
             app.UseMiddleware<PeopleMiddleware>();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -42,10 +37,6 @@ namespace PeopleApplication
                 {
                     await context.Response.WriteAsync("Hi everybody;)");
                 });
-                //endpoints.MapGet("/invalid", async context =>
-                //{
-                //    await context.Response.WriteAsync("Request is not valid.");
-                //});
             });
         }
     }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 namespace PeopleApplication.Controllers
 {
     [Controller]
-    [Route("people")]
-    public class PeopleController : ControllerBase
+    public class PeopleController : Controller
     {
         private readonly IPeopleService _service;
         public PeopleController(IPeopleService service)
@@ -15,13 +14,13 @@ namespace PeopleApplication.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        [HttpGet]
+        [Route("People/")]
         public async Task<string> List()
         {
             return await _service.ShowAllPeople();
         }
 
-        [HttpGet("{id}")]
+        [Route("People/{id}")]
         public async Task<string> View(int id)
         {
             return await _service.ShowPeopleById(Guid.NewGuid());

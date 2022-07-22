@@ -8,6 +8,7 @@ namespace PeopleApplication.Middleware
     public class PeopleMiddleware
     {
         private readonly RequestDelegate _requestDelegate;
+        
         public PeopleMiddleware(RequestDelegate next)
         {
             _requestDelegate = next ?? throw new ArgumentException(nameof(next));
@@ -26,14 +27,13 @@ namespace PeopleApplication.Middleware
                 return;
             }
 
-            context.Request.Method = "GET";
             switch (model.Method)
             {
                 case "people.view":
-                    context.Request.Path = "https://localhost:44334/people/1";
+                    context.Request.Path = "/People/1";
                     break;
                 case "people.list":
-                    context.Request.Path = "https://localhost:44334/people";
+                    context.Request.Path = "/People";
                     break;
                 default:
                     await _requestDelegate.Invoke(context);
