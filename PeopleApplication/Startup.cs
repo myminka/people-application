@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PeopleApplication.Middleware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,18 @@ namespace PeopleApplication
 
             app.UseRouting();
 
+            app.UseMiddleware<PeopleMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Hi everybody;)");
                 });
+                //endpoints.MapGet("/invalid", async context =>
+                //{
+                //    await context.Response.WriteAsync("Request is not valid.");
+                //});
             });
         }
     }
