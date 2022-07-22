@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PeopleApplication.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace PeopleApplication.Controllers
 {
-    public class PeopleController : Controller
+    [Controller]
+    [Route("people")]
+    public class PeopleController : ControllerBase
     {
         private readonly IPeopleService _service;
         public PeopleController(IPeopleService service)
@@ -12,14 +15,16 @@ namespace PeopleApplication.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        public Action View()
+        [HttpGet]
+        public async Task<string> List()
         {
-            throw new NotImplementedException();
+            return await _service.ShowAllPeople();
         }
 
-        public Action List()
+        [HttpGet("{id}")]
+        public async Task<string> View(int id)
         {
-            throw new NotImplementedException();
+            return await _service.ShowPeopleById(Guid.NewGuid());
         }
     }
 }

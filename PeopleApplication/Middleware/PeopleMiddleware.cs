@@ -3,7 +3,6 @@ using PeopleApplication.Models;
 using System;
 using System.Threading.Tasks;
 
-
 namespace PeopleApplication.Middleware
 {
     public class PeopleMiddleware
@@ -27,13 +26,14 @@ namespace PeopleApplication.Middleware
                 return;
             }
 
+            context.Request.Method = "GET";
             switch (model.Method)
             {
                 case "people.view":
-                    context.Request.Path = "/people/View";
+                    context.Request.Path = "https://localhost:44334/people/1";
                     break;
                 case "people.list":
-                    context.Request.Path = "/people/List";
+                    context.Request.Path = "https://localhost:44334/people";
                     break;
                 default:
                     await _requestDelegate.Invoke(context);

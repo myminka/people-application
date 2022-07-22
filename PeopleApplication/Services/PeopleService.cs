@@ -1,20 +1,31 @@
 ﻿using PeopleApplication.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace PeopleApplication.Services
 {
     public class PeopleService : IPeopleService
     {
-        public async Task<IList<PeopleResponse>> ShowAllPeople()
+        private readonly HttpClient _client;
+        public PeopleService()
         {
-            throw new NotImplementedException();
+            _client = new HttpClient();
         }
 
-        public async Task<PeopleResponse> ShowPeopleById(Guid guid)
+        public async Task<string> ShowAllPeople()
         {
-            throw new NotImplementedException();
+            this._client.DefaultRequestHeaders.Clear();
+            Uri uri = new Uri("https://swapi.dev/api/people");
+            return await _client.GetStringAsync(uri);
+        }
+
+        public async Task<string> ShowPeopleById(Guid guid)
+        {
+            this._client.DefaultRequestHeaders.Clear();
+            Uri uri = new Uri("https://swapi.dev/api/people/1");
+            return await _client.GetStringAsync(uri);
         }
     }
 }
