@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PeopleApplication.Services
@@ -14,18 +15,20 @@ namespace PeopleApplication.Services
             _client = new HttpClient();
         }
 
-        public async Task<string> ShowAllPeople()
+        public async Task<List<People>> ShowAllPeople()
         {
             this._client.DefaultRequestHeaders.Clear();
-            Uri uri = new Uri("https://swapi.dev/api/people");
-            return await _client.GetStringAsync(uri);
+            var uri = new Uri("https://swapi.dev/api/people");
+            var json = await _client.GetStringAsync(uri);
+            return JsonSerializer.Deserialize<List<People>>(json);
         }
 
-        public async Task<string> ShowPeopleById(Guid guid)
+        public async Task<People> ShowPeopleById(Guid guid)
         {
             this._client.DefaultRequestHeaders.Clear();
-            Uri uri = new Uri("https://swapi.dev/api/people/1");
-            return await _client.GetStringAsync(uri);
+            var uri = new Uri("https://swapi.dev/api/people/1");
+            var json = await _client.GetStringAsync(uri);
+            return JsonSerializer.Deserialize<People>(json);
         }
     }
 }
