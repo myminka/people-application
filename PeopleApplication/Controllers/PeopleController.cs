@@ -2,10 +2,12 @@
 using PeopleApplication.Services;
 using System;
 using System.Threading.Tasks;
+using PeopleApplication.Filters;
 
 namespace PeopleApplication.Controllers
 {
     [Controller]
+    [ResourceFilter]
     public class PeopleController : Controller
     {
         private readonly IPeopleService _service;
