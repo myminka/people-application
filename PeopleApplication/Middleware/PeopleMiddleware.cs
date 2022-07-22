@@ -30,10 +30,10 @@ namespace PeopleApplication.Middleware
             switch (model.Method)
             {
                 case "people.view":
-                    context.Request.Path = "/people/view";
+                    context.Request.Path = "/people/View";
                     break;
                 case "people.list":
-                    context.Request.Path = "/people/list";
+                    context.Request.Path = "/people/List";
                     break;
                 default:
                     await _requestDelegate.Invoke(context);
