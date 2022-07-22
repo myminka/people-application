@@ -20,7 +20,7 @@ namespace PeopleApplication.Services
             this._client.DefaultRequestHeaders.Clear();
             var uri = new Uri("https://swapi.dev/api/people");
             var json = await _client.GetStringAsync(uri);
-            return JsonSerializer.Deserialize<List<People>>(json);
+            return JsonSerializer.Deserialize<SwapiResponse>(json).Results;
         }
 
         public async Task<People> ShowPeopleById(Guid guid)

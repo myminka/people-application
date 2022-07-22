@@ -22,7 +22,19 @@ namespace PeopleApplication.Filters
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            _data = context.HttpContext.Request.ReadFromJsonAsync<PeopleRequest>().Result;
+            try
+            {
+                _data = context.HttpContext.Request.ReadFromJsonAsync<PeopleRequest>().Result;
+            }
+            catch
+            {
+                _data = new PeopleRequest
+                {
+                    Id = default,
+                    Jsonrpc = "2.0",
+                    Method = "uncknown",
+                };
+            }
         }
     }
 }
