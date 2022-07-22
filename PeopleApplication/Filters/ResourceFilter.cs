@@ -18,6 +18,7 @@ namespace PeopleApplication.Filters
                 Id = _data.Id,
                 Result = data,
             };
+            context.Result = (Microsoft.AspNetCore.Mvc.IActionResult)result;
         }
 
         public void OnResourceExecuting(ResourceExecutingContext context)
