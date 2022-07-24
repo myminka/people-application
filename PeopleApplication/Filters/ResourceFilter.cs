@@ -23,10 +23,10 @@ namespace PeopleApplication.Filters
                 Result = data,
             };
 
-            context.Result = null;
-            var str = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(result));
+            context.Result = new ObjectResult(result);
+            var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(result));
             
-            context.HttpContext.Response.Body.WriteAsync(str);
+            context.HttpContext.Response.Body.WriteAsync(bytes);
         }
 
         public async void OnResourceExecuting(ResourceExecutingContext context)
