@@ -17,10 +17,24 @@ namespace PeopleApplication.Services
 
         public async Task<List<People>> ShowAllPeople()
         {
+            var resultList = new List<People>();
             this._client.DefaultRequestHeaders.Clear();
-            var uri = new Uri("https://swapi.dev/api/people");
-            var json = await _client.GetStringAsync(uri);
-            return JsonSerializer.Deserialize<SwapiResponse>(json).Results;
+            var nextUrl = await GetOnePage(resultList, "https://swapi.dev/api/people");
+            while (!(nextUrl is null))
+            {
+                nextUrl = await GetOnePage(resultList, nextUrl);
+            }
+
+            return resultList;
+
+            async Task<string> GetOnePage(List<People> list, string url)
+            {
+                var uri = new Uri(url);
+                var json = await _client.GetStringAsync(uri);
+                var response = JsonSerializer.Deserialize<SwapiResponse>(json);
+                resultList.AddRange(response.Results);
+                return response.Next;
+            }
         }
 
         public async Task<People> ShowPeopleById(Guid guid)

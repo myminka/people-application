@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PeopleApplication.Models;
 using System;
+using System.Collections.Generic;
 
 namespace PeopleApplication.Filters
 {
@@ -12,13 +13,13 @@ namespace PeopleApplication.Filters
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
             var fs = context.HttpContext.Response;
-            var data = context.Result;
+            var data = ((ObjectResult)context.Result).Value;
             var result = new PeopleResponse
             {
                 Jsonrpc = _data.Jsonrpc,
                 Method = _data.Method,
                 Id = _data.Id,
-                Result = data,
+                Result = (List<People>)data,
             };
             context.Result = new ObjectResult(result);
         }

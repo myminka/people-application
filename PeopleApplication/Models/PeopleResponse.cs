@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PeopleApplication.Models
 {
@@ -8,6 +8,6 @@ namespace PeopleApplication.Models
         public string Jsonrpc { get; set; }
         public string Method { get; set; }
         public Guid Id { get; set; }
-        public IActionResult Result { get; set; }
+        public List<People> Result { get; set; }
     }
 }
