@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using PeopleApplication.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PeopleApplication.Middleware
@@ -8,10 +10,12 @@ namespace PeopleApplication.Middleware
     public class PeopleMiddleware
     {
         private readonly RequestDelegate _requestDelegate;
+        private readonly EndpointDataSource _endpoinDataSource;
         
-        public PeopleMiddleware(RequestDelegate next)
+        public PeopleMiddleware(RequestDelegate next, EndpointDataSource datasource)
         {
             _requestDelegate = next ?? throw new ArgumentException(nameof(next));
+            _endpoinDataSource = datasource;
         }
 
         public async Task Invoke(HttpContext context)
@@ -27,13 +31,23 @@ namespace PeopleApplication.Middleware
                 return;
             }
 
+            var endpoint = _endpoinDataSource.Endpoints
+    .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ListPeople (PeopleApplication)");
+
+            var ea = _endpoinDataSource.Endpoints
+                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ViewPeople (PeopleApplication)");
+
             switch (model.Method)
             {
-                case "people.view":
-                    context.Request.Path = "/People/1";
+                case "people.view":                    
+                    context.SetEndpoint(
+                    _endpoinDataSource.Endpoints
+                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ListPeople (PeopleApplication)"));
                     break;
                 case "people.list":
-                    context.Request.Path = "/People";
+                    context.SetEndpoint(
+                    _endpoinDataSource.Endpoints
+                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ViewPeople (PeopleApplication)"));
                     break;
                 default:
                     await _requestDelegate.Invoke(context);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PeopleApplication.Models;
 using System;
@@ -10,6 +11,7 @@ namespace PeopleApplication.Filters
         private PeopleRequest _data;
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
+            var fs = context.HttpContext.Response;
             var data = context.Result;
             var result = new PeopleResponse
             {
@@ -18,7 +20,7 @@ namespace PeopleApplication.Filters
                 Id = _data.Id,
                 Result = data,
             };
-            context.Result = (Microsoft.AspNetCore.Mvc.IActionResult)result;
+            context.Result = new ObjectResult(result);
         }
 
         public void OnResourceExecuting(ResourceExecutingContext context)

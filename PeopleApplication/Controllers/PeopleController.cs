@@ -18,14 +18,14 @@ namespace PeopleApplication.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        [Route("People/")]
-        public async Task<List<People>> List()
+        [Route("List")]
+        public async Task<List<People>> ListPeople()
         {
             return await _service.ShowAllPeople();
         }
 
-        [Route("People/{id}")]
-        public async Task<People> View(int id)
+        [Route("View")]
+        public async Task<People> ViewPeople()
         {
             return await _service.ShowPeopleById(Guid.NewGuid());
         }
