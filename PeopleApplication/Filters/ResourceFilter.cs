@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PeopleApplication.Models;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
 
 namespace PeopleApplication.Filters
 {
@@ -12,23 +14,26 @@ namespace PeopleApplication.Filters
         private PeopleRequest _data;
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
-            var fs = context.HttpContext.Response;
             var data = ((ObjectResult)context.Result).Value;
             var result = new PeopleResponse
             {
                 Jsonrpc = _data.Jsonrpc,
                 Method = _data.Method,
                 Id = _data.Id,
-                Result = (List<People>)data,
+                Result = data,
             };
-            context.Result = new ObjectResult(result);
+
+            context.Result = null;
+            var str = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(result));
+            
+            context.HttpContext.Response.Body.WriteAsync(str);
         }
 
-        public void OnResourceExecuting(ResourceExecutingContext context)
+        public async void OnResourceExecuting(ResourceExecutingContext context)
         {
             try
             {
-                _data = context.HttpContext.Request.ReadFromJsonAsync<PeopleRequest>().Result;
+                _data = await context.HttpContext.Request.ReadFromJsonAsync<PeopleRequest>();
             }
             catch
             {

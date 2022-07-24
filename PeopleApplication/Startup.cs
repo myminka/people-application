@@ -30,8 +30,9 @@ namespace PeopleApplication
             app.UseRouting();
 
             app.UseMiddleware<PeopleMiddleware>();
+
             app.UseEndpoints(endpoints =>
-            {
+            { 
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context =>
                 {

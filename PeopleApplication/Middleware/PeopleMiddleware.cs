@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Routing;
 using PeopleApplication.Models;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PeopleApplication.Middleware
@@ -14,7 +17,7 @@ namespace PeopleApplication.Middleware
         
         public PeopleMiddleware(RequestDelegate next, EndpointDataSource datasource)
         {
-            _requestDelegate = next ?? throw new ArgumentException(nameof(next));
+            _requestDelegate = next;
             _endpoinDataSource = datasource;
         }
 
@@ -24,6 +27,7 @@ namespace PeopleApplication.Middleware
             try
             {
                 model = context.Request.ReadFromJsonAsync<PeopleRequest>().Result;
+                context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model)));
             }
             catch
             {
@@ -31,28 +35,22 @@ namespace PeopleApplication.Middleware
                 return;
             }
 
-            var endpoint = _endpoinDataSource.Endpoints
-    .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ListPeople (PeopleApplication)");
-
-            var ea = _endpoinDataSource.Endpoints
-                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ViewPeople (PeopleApplication)");
-
             switch (model.Method)
             {
-                case "people.view":                    
-                    context.SetEndpoint(
-                    _endpoinDataSource.Endpoints
-                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ListPeople (PeopleApplication)"));
+                case "people.view":
+                    context.SetEndpoint(_endpoinDataSource.Endpoints
+                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ViewPeople (PeopleApplication)"));
                     break;
                 case "people.list":
                     context.SetEndpoint(
                     _endpoinDataSource.Endpoints
-                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ViewPeople (PeopleApplication)"));
+                        .FirstOrDefault(e => e.DisplayName == "PeopleApplication.Controllers.PeopleController.ListPeople (PeopleApplication)"));
                     break;
                 default:
-                    await _requestDelegate.Invoke(context);
                     break;
             }
+
+            await _requestDelegate.Invoke(context);
         }
     }
 }
