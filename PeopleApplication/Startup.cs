@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PeopleApplication.Filters;
 using PeopleApplication.Middleware;
 using PeopleApplication.Services;
 
@@ -17,6 +18,8 @@ namespace PeopleApplication
             services.AddControllers();
 
             services.AddScoped<IPeopleService, PeopleService>();
+
+            services.AddScoped<ResultFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

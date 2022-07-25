@@ -9,7 +9,7 @@ using PeopleApplication.Models;
 namespace PeopleApplication.Controllers
 {
     [Controller]
-    [ResourceFilter]
+    [ResultFilter]
     public class PeopleController : Controller
     {
         private readonly IPeopleService _service;
