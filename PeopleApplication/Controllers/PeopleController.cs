@@ -19,9 +19,9 @@ namespace PeopleApplication.Controllers
         }
 
         [Route("List")]
-        public List<People> ListPeople()
+        public async Task<List<People>> ListPeople()
         {
-            return _service.ShowAllPeople().Result;
+            return await _service.ShowAllPeople();
         }
 
         [Route("View")]

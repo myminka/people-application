@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PeopleApplication.Models;
 using System;
-using System.IO;
 using System.Text;
 using System.Text.Json;
 
