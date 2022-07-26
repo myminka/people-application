@@ -26,4 +26,8 @@ jobs:
       
       # Runs a single command using the runners shell
       - name: Build
+<<<<<<< HEAD
         run: dotnet build
+=======
+        run: dotnet build
+>>>>>>> 0f6cac676a1e2aa67e81d019913c4407bd3de492
