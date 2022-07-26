@@ -27,7 +27,6 @@ namespace PeopleApplication.Controllers
         [Route("View")]
         public async Task<People> ViewPeople()
         {
-
             return await _service.ShowPeopleById(Guid.NewGuid());
         }
     }
