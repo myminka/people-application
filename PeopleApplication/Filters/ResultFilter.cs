@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PeopleApplication.Models;
 using System;
-using System.Reflection;
-using Mono.Reflection;
-using System.Threading.Tasks;
 
 namespace PeopleApplication.Filters
 {
